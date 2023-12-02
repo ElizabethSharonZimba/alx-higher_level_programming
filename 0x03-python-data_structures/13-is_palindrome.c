@@ -1,31 +1,39 @@
 #include "lists.h"
 
 /**
- * is_palindrome - checks  palindrome
- * @head: head
- * Return: 0 else 1
+ * is_palindrome - Checks palindrome
+ * @head: Pointer to the list
+ * Return: 1 else 0
  */
 int is_palindrome(listint_t **head)
 {
-    unsigned int len = 0, i;
-    int values[10000]; /* Assuming a maximum of 10000 elements, adjust as needed */
-    listint_t *temp;
+    listint_t *slow = *head, *fast = *head;
+    listint_t *prev = NULL, *temp;
 
-    if (head == NULL || *head == NULL)
-        return (1);
+    if (*head == NULL || (*head)->next == NULL)
+        return 1;
 
-    temp = *head;
-    while (temp) /* get len of list and store values */
+    while (fast != NULL && fast->next != NULL)
     {
-        values[len++] = temp->n;
-        temp = temp->next;
+        fast = fast->next->next;
+
+        temp = slow->next;
+        slow->next = prev;
+        prev = slow;
+        slow = temp;
     }
 
-    for (i = 0; i < len / 2; i++)
+    if (fast != NULL)
+        slow = slow->next;
+
+    while (prev != NULL && slow != NULL)
     {
-        if (values[i] != values[len - 1 - i])
-            return (0);
+        if (prev->n != slow->n)
+            return 0;
+
+        prev = prev->next;
+        slow = slow->next;
     }
 
-    return (1);
+    return 1;
 }
