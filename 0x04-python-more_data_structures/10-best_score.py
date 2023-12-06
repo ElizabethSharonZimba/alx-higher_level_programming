@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-
-def multiply_by_2(a_dictionary=None):
-    if a_dictionary is None:
-        a_dictionary = {}
-    
-    new_dict = {}
-    for key, value in a_dictionary.items():
-        new_dict[key] = value * 2
-    return new_dict
+def best_score(a_dictionary):
+    if (a_dictionary):
+        values = a_dictionary.values()
+        max_value = max(values)
+        new_dict = list(filter(lambda item: (item[1] == max_value),
+                        a_dictionary.items()))
+        return (new_dict[0][0])
+    else:
+        return (None)

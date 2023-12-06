@@ -1,8 +1,4 @@
 #!/usr/bin/python3
-
-def update_dictionary(a_dictionary=None, key=None, value=None):
-    if a_dictionary is None:
-        a_dictionary = {}
-    
+def update_dictionary(a_dictionary, key, value):
     a_dictionary[key] = value
     return a_dictionary
