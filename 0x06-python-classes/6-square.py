@@ -1,15 +1,36 @@
 #!/usr/bin/python3
+"""Define a class Square."""
+
+
 class Square:
+    """Represent a square."""
+
     def __init__(self, size=0, position=(0, 0)):
+        """Initialize a new square.
+
+        Parameters:
+            size (int): The size of the new square.
+            position (tuple): The position of the new square, specified as a tuple of 2 integers.
+        """
         self.size = size
         self.position = position
 
     @property
     def size(self):
-         return (self.__size)
+        """Get or set the current size of the square."""
+        return self.__size
 
     @size.setter
     def size(self, value):
+        """Set the size of the square.
+
+        Parameters:
+            value (int): The new size for the square.
+
+        Raises:
+            TypeError: If the provided size is not an integer.
+            ValueError: If the provided size is less than 0.
+        """
         if not isinstance(value, int):
             raise TypeError("size must be an integer")
         elif value < 0:
@@ -18,10 +39,20 @@ class Square:
 
     @property
     def position(self):
-        return (self.__position)
+        """Get or set the current position of the square."""
+        return self.__position
 
     @position.setter
     def position(self, value):
+        """Set the position of the square.
+
+        Parameters:
+            value (tuple): The new position for the square, specified as a tuple of 2 positive integers.
+
+        Raises:
+            TypeError: If the provided position is not a tuple of 2 integers.
+            ValueError: If any of the integers in the tuple are less than 0.
+        """
         if (not isinstance(value, tuple) or
                 len(value) != 2 or
                 not all(isinstance(num, int) for num in value) or
@@ -30,10 +61,12 @@ class Square:
         self.__position = value
 
     def area(self):
-        return (self.__size * self.__size)
+        """Return the current area of the square."""
+        return self.__size * self.__size
 
     def my_print(self):
-         if self.__size == 0:
+        """Print the square with the # character."""
+        if self.__size == 0:
             print("")
             return
 
@@ -42,3 +75,4 @@ class Square:
             [print(" ", end="") for j in range(0, self.__position[0])]
             [print("#", end="") for k in range(0, self.__size)]
             print("")
+
