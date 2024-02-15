@@ -1,5 +1,8 @@
 #!/usr/bin/python3
+<<<<<<< HEAD
 
+=======
+>>>>>>> cc6256aea8c3b99a8371ddcf278cc51e4e667bb3
 """Defines a base model class."""
 import json
 import csv
