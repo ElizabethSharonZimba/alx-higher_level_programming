@@ -1,34 +1,53 @@
 #!/usr/bin/python3
 """
-This script lists all cities from
-the database `hbtn_0e_4_usa`.
+This script retrieves states from the hbtn_0e_0_usa database
+based on the provided state name.
 """
 
 import MySQLdb
-from sys import argv
+import sys
 
-if __name__ == '__main__':
+def main():
     """
-    Access to the database and get the cities
-    from the database.
+    Main function to execute the script.
     """
     args = sys.argv
-    if len(args) < 4:
-        print("Usage: {} username password db_name".format(args[0]))
+    if len(args) < 5:
+        print("Usage: {} username password db_name state_name".format(args[0]))
         exit(1)
+
     username = args[1]
     password = args[2]
-    data = args[3]
-    db = MySQLdb.connect(host='localhost', user=username,
-                         passwd=password, db=data,
-                         port=3306)
-    cur = db.cursor()
-    num_rows = cur.execute('''
-        SELECT cities.id, cities.name, states.name
-        FROM cities INNER JOIN states
-        ON cities.state_id=states.id
-        ORDER BY cities.id ASC
-        ''')
-    rows = cur.fetchall()
-    for row in rows:
-        print(row)
+    database = args[3]
+    state_name = args[4]
+
+    try:
+        db = MySQLdb.connect(host='localhost', user=username,
+                             passwd=password, db=database,
+                             port=3306)
+        cur = db.cursor()
+
+        cur.execute("SELECT * FROM states WHERE name=%s", (state_name,))
+        rows = cur.fetchall()
+
+        if rows:
+            for row in rows:
+                print(row)
+        else:
+            print("No states found with the name '{}'".format(state_name))
+
+    except MySQLdb.Error as e:
+        print("MySQL Error: {}".format(str(e)))
+
+    except Exception as e:
+        print("An unexpected error occurred:", str(e))
+
+    finally:
+        if cur:
+            cur.close()
+        if db:
+            db.close()
+
+if __name__ == '__main__':
+    main()
+
