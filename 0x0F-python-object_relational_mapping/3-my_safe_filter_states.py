@@ -31,14 +31,21 @@ if __name__ == '__main__':
         cur.execute("SELECT * FROM states WHERE name=%s", (state_name,))
         rows = cur.fetchall()
 
-        for row in rows:
-            print(row)
+        if rows:
+            for row in rows:
+                print(row)
+        else:
+            print("No states found with the name '{}'".format(state_name))
 
     except MySQLdb.Error as e:
         print("MySQL Error: {}".format(str(e)))
+
+    except Exception as e:
+        print("An unexpected error occurred:", str(e))
 
     finally:
         if cur:
             cur.close()
         if db:
             db.close()
+
