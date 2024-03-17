@@ -9,27 +9,36 @@ MySQL injections!
 """
 
 import MySQLdb
-from sys import argv
+import sys
 
 if __name__ == '__main__':
-    """
-    Access to the database and get the states
-    from the database.
-    """
     args = sys.argv
     if len(args) < 5:
         print("Usage: {} username password db_name state_name".format(args[0]))
         exit(1)
+
     username = args[1]
     password = args[2]
-    data = args[3]
+    database = args[3]
     state_name = args[4]
-    db = MySQLdb.connect(host='localhost', user=username,
-                         passwd=password, db=data,
-                         port=3306)
-    cur = db.cursor()
-    num_rows = cur.execute("SELECT * FROM states ORDER BY states.id")
-    rows = cur.fetchall()
-    for row in rows:
-        if (state_name == row[1]):
+
+    try:
+        db = MySQLdb.connect(host='localhost', user=username,
+                             passwd=password, db=database,
+                             port=3306)
+        cur = db.cursor()
+
+        cur.execute("SELECT * FROM states WHERE name=%s", (state_name,))
+        rows = cur.fetchall()
+
+        for row in rows:
             print(row)
+
+    except MySQLdb.Error as e:
+        print("MySQL Error: {}".format(str(e)))
+
+    finally:
+        if cur:
+            cur.close()
+        if db:
+            db.close()
